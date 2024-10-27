@@ -10,9 +10,19 @@ function validatePriority(priority) { // value can be a string or a number (inte
   return [1,3,5,7].includes(Number(priority)) ? Number(priority) : 1
 }
 
+function formatDatePart(part) {
+  return String(part).length !== 2 ? `0${part}` : part
+}
 
 function todaysDate () {
-  
+  const now = new Date()
+  const day = now.getDate();
+  const month = now.getMonth()+1;
+  const year = now.getFullYear();
+  const hour = now.getHours();
+  const minute = now.getMinutes();
+  const second = now.getSeconds();
+  return `${formatDatePart(day)}/${formatDatePart(month)}/${year} ${formatDatePart(hour)}:${formatDatePart(minute)}:${formatDatePart(second)}`
 }
 
 
@@ -30,7 +40,7 @@ class ToDo {
 // Testing
 
 console.log(validInteger('4'))
-console.log(validatePriority(3))
+console.log(todaysDate())
 
 
 
