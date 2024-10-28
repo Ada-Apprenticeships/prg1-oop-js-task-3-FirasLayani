@@ -1,5 +1,5 @@
 // Put back to single quotes
-PRIORITY = { LOW: 1, MEDIUM: 3, HIGH: 5, URGENT: 7 };
+PRIORITY = { 'LOW': 1, 'MEDIUM': 3, 'HIGH': 5, 'URGENT': 7 };
 
 function validInteger(value) {
   value = String(value);
@@ -18,6 +18,7 @@ function validatePriority(priority) {
   }
 }
 
+// Return digits as '09' or '03' instead of '9' or '3' etc. if not already two-digit
 function formatDatePart(part) {
   return part < 10 ? `0${part}` : part;
 }
@@ -86,30 +87,26 @@ class ToDo {
     return itemRemoved;
   }
 
+  // Return a list of tasks whose priority correlates with the argument entered
   list(priority = 0) {
-    if (Number(priority) === 1) {
-      for (let task in this.tasks) {
-        console.log(task);
+    priority = priority === 0 ? 0 : validatePriority(priority); // Validate priority, unless it is a valid 0
+    let returnList = [];
+    for (let task of this.tasks) {
+      if (priority === 0 || task.priority === priority) {
+        returnList.push([task.added, task.title, task.priority]);
       }
     }
-  }
-
-  SHOWEVERYTHING() {
-    for (let i = 0; i < this.tasks.length; i++) {
-      console.log(this.tasks[i].title);
-    }
+    return returnList;
   }
 }
 
 // Testing
 
-const toDoList = new ToDo();
-console.log(
-  `Number of tasks is: ${toDoList.add(new Task('Open the naur', 'high'))}`
-);
-console.log(`Number of tasks is: ${toDoList.add(new Task('Augh for me', 4))}`);
-// console.log(toDoList.remove('Augh for me'));
-toDoList.SHOWEVERYTHING();
+const taskList = new ToDo();
+console.log(taskList.add(new Task('Get Cappuccino', PRIORITY['HIGH'])));
+taskList.add(new Task('Order Lunch', PRIORITY['MEDIUM']));
+console.log(taskList.add(new Task('Complete Project Sprint', PRIORITY['MEDIUM'])));
+console.log(taskList.list(0));
 
 // Leave this code here for the automated tests
 module.exports = {
