@@ -1,18 +1,18 @@
-// Put back to single quotes
 PRIORITY = { 'LOW': 1, 'MEDIUM': 3, 'HIGH': 5, 'URGENT': 7 };
 
+// Check if value is a positive integer or not
 function validInteger(value) {
   value = String(value);
   const intRegex = /^[0-9]+$/;
   return intRegex.test(value) && value % 1 === 0 && value >= 0 ? true : false;
 }
 
-// Check priority is valid by cr
+// Check if priority is valid, i.e. defined in PRIORITY dictionary
 function validatePriority(priority) {
-  //return [1,3,5,7].includes(Number(priority)) || PRIORITY.hasOwnProperty(priority.toUpperCase()) ? Number(priority) : 1;
   if ([1, 3, 5, 7].includes(Number(priority))) {
     return Number(priority);
   } else if (PRIORITY.hasOwnProperty(String(priority).toUpperCase())) {
+    // Check if word e.g. 'low' capitalised is a key in PRIORITY
     return PRIORITY[String(priority).toUpperCase()];
   } else {
     return 1;
@@ -76,7 +76,7 @@ class ToDo {
     return this.tasks.length;
   }
 
-  // Refactor to use forEach, use for now
+  // Refactor to use forEach, use for now, and return true/false without variable due to return exiting the funtion
   remove(taskName) {
     let itemRemoved = false;
     for (let i = 0; i < this.tasks.length; i++) {
@@ -90,7 +90,7 @@ class ToDo {
 
   // Return a list of tasks whose priority correlates with the argument entered
   list(priority = 0) {
-    priority = priority === 0 ? 0 : validatePriority(priority); // Validate priority, unless it is a valid 0
+    priority = priority === 0 ? 0 : validatePriority(priority); // Unless priority is a valid 0, validate it
     let returnList = [];
     for (let task of this.tasks) {
       if (priority === 0 || task.priority === priority) {
@@ -102,14 +102,12 @@ class ToDo {
 
   // Return the task with the entered title
   task(title) {
-    let found = false
     for (let task of this.tasks) {
       if (task.title === title) {
-        found = true
         return task;
       }
     }
-    return found
+    throw new Error(`Task '${title}' Not Found`);
   }
 }
 
@@ -123,6 +121,15 @@ console.log(taskList.list(PRIORITY['MEDIUM']));
 console.log(taskList.list(PRIORITY['HIGH']));
 taskList.task('Complete Project Sprint').priority = PRIORITY['HIGH'];
 console.log(taskList.list(PRIORITY['HIGH']));
+console.log(taskList.list(PRIORITY['HIGH'])[0][1]);
+console.log(taskList.remove('Complete Project Sprint1'));
+console.log(taskList.remove('Complete Project Sprint'));
+console.log(taskList.list(PRIORITY['HIGH']));
+try {
+  taskList.task('WrongTitle');
+} catch (error) {
+  console.log(`Ayo there was an error: ${error}`);
+}
 
 // Leave this code here for the automated tests
 module.exports = {
