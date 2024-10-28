@@ -5,7 +5,7 @@ function validInteger (value) { // value can be a string or a number (integer)
   return value%1===0 && value >= 0 ? true : false;
 }  
 
-
+// Ask if input will be LOW or only numbers
 function validatePriority(priority) { // value can be a string or a number (integer)
   return [1,3,5,7].includes(Number(priority)) ? Number(priority) : 1;
 }
@@ -26,8 +26,31 @@ function todaysDate () {
 }
 
 class Task  {
+  #added;
+  #title;
+  #priority;
 
-  // (title, priority)
+  constructor(title, priority) {
+    this.#title = title;
+    this.#priority = validatePriority(priority);
+    this.#added = todaysDate();
+  }
+
+  get added() {
+    return this.#added;
+  }
+
+  get title() {
+    return this.#title;
+  }
+
+  get priority() {
+    return this.#priority
+  }
+
+  set priority(newPriority) {
+    this.#priority = validatePriority(newPriority);
+  }
 }
 
 
