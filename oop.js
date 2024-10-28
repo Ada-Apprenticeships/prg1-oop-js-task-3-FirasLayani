@@ -7,6 +7,7 @@ function validInteger(value) {
   return intRegex.test(value) && value % 1 === 0 && value >= 0 ? true : false;
 }
 
+// Check priority is valid by cr
 function validatePriority(priority) {
   //return [1,3,5,7].includes(Number(priority)) || PRIORITY.hasOwnProperty(priority.toUpperCase()) ? Number(priority) : 1;
   if ([1, 3, 5, 7].includes(Number(priority))) {
@@ -23,6 +24,7 @@ function formatDatePart(part) {
   return part < 10 ? `0${part}` : part;
 }
 
+// Return the current date and time in a string format
 function todaysDate() {
   const now = new Date();
   const day = formatDatePart(now.getDate());
@@ -71,7 +73,6 @@ class ToDo {
 
   add(task) {
     this.tasks.push(task);
-    console.log(this.tasks);
     return this.tasks.length;
   }
 
@@ -98,15 +99,30 @@ class ToDo {
     }
     return returnList;
   }
+
+  // Return the task with the entered title
+  task(title) {
+    let found = false
+    for (let task of this.tasks) {
+      if (task.title === title) {
+        found = true
+        return task;
+      }
+    }
+    return found
+  }
 }
 
 // Testing
 
 const taskList = new ToDo();
 console.log(taskList.add(new Task('Get Cappuccino', PRIORITY['HIGH'])));
-taskList.add(new Task('Order Lunch', PRIORITY['MEDIUM']));
+console.log(taskList.add(new Task('Order Lunch', PRIORITY['MEDIUM'])));
 console.log(taskList.add(new Task('Complete Project Sprint', PRIORITY['MEDIUM'])));
-console.log(taskList.list(0));
+console.log(taskList.list(PRIORITY['MEDIUM']));
+console.log(taskList.list(PRIORITY['HIGH']));
+taskList.task('Complete Project Sprint').priority = PRIORITY['HIGH'];
+console.log(taskList.list(PRIORITY['HIGH']));
 
 // Leave this code here for the automated tests
 module.exports = {
