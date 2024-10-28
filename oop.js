@@ -70,6 +70,7 @@ class ToDo {
 
   add(task) {
     this.tasks.push(task);
+    console.log(this.tasks);
     return this.tasks.length;
   }
 
@@ -84,15 +85,31 @@ class ToDo {
     }
     return itemRemoved;
   }
+
+  list(priority = 0) {
+    if (Number(priority) === 1) {
+      for (let task in this.tasks) {
+        console.log(task);
+      }
+    }
+  }
+
+  SHOWEVERYTHING() {
+    for (let i = 0; i < this.tasks.length; i++) {
+      console.log(this.tasks[i].title);
+    }
+  }
 }
 
 // Testing
 
 const toDoList = new ToDo();
-console.log(toDoList.add(new Task('Open the naur', 'high')));
-console.log(toDoList.add(new Task('Augh for me', 4)));
-console.log(toDoList.add('ARGH'));
-console.log(toDoList.remove('Augh for me'));
+console.log(
+  `Number of tasks is: ${toDoList.add(new Task('Open the naur', 'high'))}`
+);
+console.log(`Number of tasks is: ${toDoList.add(new Task('Augh for me', 4))}`);
+// console.log(toDoList.remove('Augh for me'));
+toDoList.SHOWEVERYTHING();
 
 // Leave this code here for the automated tests
 module.exports = {
